@@ -1,12 +1,9 @@
 #include "RBTree.h"
-#include "utilities/RBUtilities.h"
 #include "Structs.h"
 #include <stdlib.h>
-#include <stdio.h>
 
 
 #define INITIAL_SIZE 0
-#define RIGHT 0
 #define LEFT 1
 #define FOR_EACH_TRUE 1
 
