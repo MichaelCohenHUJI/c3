@@ -32,7 +32,7 @@ int concatenate(const void *word, void *pConcatenated)
 
 void freeString(void *s)
 {
-    free(s);
+    free((char*)s);
     s = NULL;
 }
 
@@ -61,10 +61,9 @@ int vectorCompare1By1(const void *a, const void *b)
 
 void freeVector(void *pVector)
 {
-    Vector *vec = (Vector *)pVector;
-    free(vec->vector);
-    vec->vector = NULL;
-    vec = NULL; // free struct itself?
+    free(((Vector*)pVector)->vector);
+    ((Vector*)pVector)->vector = NULL;
+    free(pVector);
 }
 
 
@@ -73,7 +72,7 @@ double getNorm(Vector *vec)
     double norm = 0;
     for (int i = 0; i < vec->len ; i++)
     {
-        norm += fabs(vec->vector[i]);
+        norm += vec->vector[i]*vec->vector[i];
     }
     return norm;
 }

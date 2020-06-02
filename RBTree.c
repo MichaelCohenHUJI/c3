@@ -48,6 +48,10 @@ void rotate(Node *p, int orientation, RBTree *tree)
     {
         Node *n = p->right;
         p->right = n->left;
+        if (p->right != NULL)
+        {
+            p->right->parent = p;
+        }
         n->parent = g;
         n->left = p;
         p->parent = n;
@@ -65,6 +69,10 @@ void rotate(Node *p, int orientation, RBTree *tree)
     {
         Node *n = p->left;
         p->left = n->right;
+        if (p->left != NULL)
+        {
+            (p->left)->parent = p;
+        }
         n->parent = g;
         n->right = p;
         p->parent = n;
@@ -214,10 +222,12 @@ void doubleBlack(Node *c, Node *p, RBTree *tree)
     {
         return;
     }
-    Node *s = (p->left == c) ? p->right : p->left;
-    unsigned int sLeft = (s->left != NULL) ? s->left->color : BLACK;
-    unsigned int sRight = (s->right != NULL) ? s->right->color : BLACK;
-    if (s->color == BLACK && sLeft == BLACK && sRight == BLACK)
+    Node *s = (p->left == c) ? p->right : p->left; //can be null?
+    Node *sCloser = (p->left == c) ? s->left : s->right;
+    Node *sFurther = (p->left == c) ? s->right : s->left;
+    unsigned int farColor = (sFurther == NULL) ? BLACK : sFurther->color;
+    unsigned int closeColor = (sCloser == NULL) ? BLACK : sCloser->color;
+    if (s->color == BLACK && farColor == BLACK && closeColor == BLACK)
     {
         if (p->color == RED)
         {
@@ -240,9 +250,7 @@ void doubleBlack(Node *c, Node *p, RBTree *tree)
         doubleBlack(c, p, tree);
         return;
     }
-    Node *sCloser = (p->left == c) ? s->left : s->right;
-    Node *sFurther = (p->left == c) ? s->right : s->left;
-    if (s->color == BLACK && sFurther->color == BLACK && sCloser->color == RED)
+    if (s->color == BLACK && farColor == BLACK && closeColor == RED)
     {
         sCloser->color = BLACK;
         s->color = RED;
@@ -289,14 +297,14 @@ void deleteNode(Node *m, RBTree *tree)
     if (m->color == RED || (cColor == RED))
     {
         connectSon(p, c, m, tree);
-        ff(m);
+        ff(m->data);
         tree->size--;
         return;
     }
     else
     {
         connectSon(p, c, m, tree);
-        ff(m);
+        ff(m->data);
         tree->size--;
         doubleBlack(c, p, tree);
         return;
@@ -338,6 +346,7 @@ int deleteFromRBTree(RBTree *tree, void *data)
         m = cur;
     }
     deleteNode(m, tree);
+    free(m);
     return 1;
 }
 
