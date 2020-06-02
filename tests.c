@@ -10,7 +10,7 @@
 #include <stdlib.h>
 #include <stdbool.h>
 
-#define LAST_NUMBER_OF_NODES_TO_CHECK 500
+#define LAST_NUMBER_OF_NODES_TO_CHECK 300
 
 #define MAX_STRING_LENGTH_CHECK 50
 #define MAX_VECTOR_DATA_VALUE 10000
@@ -272,8 +272,8 @@ void vectorTree()
 
 int main()
 {
-    intTree();
-    stringTree();
+//    intTree();
+//    stringTree();
     vectorTree();
     printf("\nPassed All tests!!\n");
     return EXIT_SUCCESS;
